@@ -23,9 +23,10 @@ judge-many; the effect survives a fully independent fourth judge family (xAI);
 every claim traces to logged, re-judgeable runs (the one null cell is reported,
 unpatched).
 
-- 📊 **Evidence & verification release:** `Gubernaut_Validation` — transcripts,
-  judge panels (sha256), both sealed matrices, and the combine script that
-  recomputes the headline end to end. *Flips public with the paper's data release.*
+- 📊 **Evidence & verification release:**
+  [Gubernaut_Validation](https://github.com/thegubernaut/Gubernaut_Validation) —
+  transcripts, judge panels (sha256), both sealed matrices, and the scripts that
+  recompute the headline end to end. Start at RECOMPUTE.md.
 - 📄 **White paper:** forthcoming — Zenodo DOI lands with the data release; arXiv follows.
 - 🎛️ **Replay:** [gubernaut.com/research](https://gubernaut.com/research) steps the
   sealed runs turn by turn, both arms. Recorded run replay, no live API.
