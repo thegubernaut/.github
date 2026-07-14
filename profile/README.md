@@ -27,8 +27,9 @@ unpatched).
   [Gubernaut_Validation](https://github.com/thegubernaut/Gubernaut_Validation) —
   transcripts, judge panels (sha256), both sealed matrices, and the scripts that
   recompute the headline end to end. Start at RECOMPUTE.md.
-- 📄 **White paper:** [10.5281/zenodo.21303519](https://doi.org/10.5281/zenodo.21303519)
-  (Zenodo, CC BY 4.0) · [PDF](https://gubernaut.com/paper/gubernaut_whitepaper.pdf) · arXiv preprint follows.
+- 📄 **White paper:** [10.5281/zenodo.21303518](https://doi.org/10.5281/zenodo.21303518)
+  (Zenodo, CC BY 4.0 — the concept DOI, always the latest version) ·
+  [PDF](https://gubernaut.com/paper/gubernaut_whitepaper.pdf) · arXiv preprint follows.
 - 🎛️ **Replay:** [gubernaut.com/research](https://gubernaut.com/research) steps the
   sealed runs turn by turn, both arms. Recorded run replay, no live API.
 
