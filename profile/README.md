@@ -2,21 +2,20 @@
 
 **The missing control layer for modern AI.**
 
-We build the **Gubernaut Cognitive Controller (GCC)** — a deterministic,
+**Gubernaut Cognitive Controller (GCC)** — a deterministic,
 model-agnostic control layer that wraps any LLM in a dual-process architecture
 (a fast impulse layer, an executive arbiter, an episodic memory, a self-model)
 under a homeostatic metacognitive controller. It does **not** retrain the host
 model; it regulates it at runtime, and every regulatory decision is logged,
 inspectable, and reproducible.
 
-This is a control system, not a "mind" in any philosophical sense. The target is an
-engineering objective: calm, evidence-responsive output under adversarial pressure.
 
 ### Validation — pre-registered, cross-family
 
 Regulated output beats baseline in **15/16** generator×judge cells by sign (11/12
 off-diagonal, 4/4 diagonal), **13/16 significant at p<.05**, across four frontier
-model families, each serving as both generator and judge. The original three-model
+model families (GPT-5.5, Claude Opus 4.8, Gemini 3.5 Flash, and Grok 4.3), 
+each serving as both generator and judge. The original three-model
 3×3 was pre-registered and frozen before the fourth family was added; adding it
 changed no earlier cell, and both matrices ship verbatim. Generate-once /
 judge-many; the effect survives a fully independent fourth judge family (xAI);
