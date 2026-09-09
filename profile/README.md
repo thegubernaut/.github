@@ -1,4 +1,4 @@
-# Gubernaut Research
+# Gubernaut Lab
 
 **The missing control layer for modern AI.**
 
@@ -22,11 +22,16 @@ API bill. Apache-2.0, free, self-hosted. Adoption is one line.
 openai.base_url = "http://localhost:8000/v1"
 ```
 
-| | | |
-| --- | --- | --- |
-| **Python**, start here | [`gubernaut-sdk`](https://pypi.org/project/gubernaut-sdk/) | `pip install gubernaut-sdk` |
-| **Rust**, for performance and wasm | [`gcc-core`](https://crates.io/crates/gcc-core) | `cargo add gcc-core` |
-| **Node**, for framework hooks | [`@gubernaut/plugin-gcc`](https://www.npmjs.com/package/@gubernaut/plugin-gcc) | `npm install @gubernaut/plugin-gcc` |
+| | Product | | |
+| --- | --- | --- | --- |
+| **Python**, start here | **Gubernaut Tiller** | [`gubernaut-sdk`](https://pypi.org/project/gubernaut-sdk/) | `pip install gubernaut-sdk` |
+| **Rust**, for performance and wasm | unnamed, held | [`gubernaut-core`](https://crates.io/crates/gubernaut-core) | `cargo add gubernaut-core` |
+| **JS/TS**, no proxy needed | **Gubernaut Keel** | [`@gubernaut/core`](https://www.npmjs.com/package/@gubernaut/core) | `npm install @gubernaut/core` |
+| **Node**, ElizaOS | proxy client (Tiller) | [`@gubernaut/plugin-gcc`](https://www.npmjs.com/package/@gubernaut/plugin-gcc) | `npm install @gubernaut/plugin-gcc` |
+
+**Gubernaut Tiller** and **Gubernaut Keel** are product names for two of these four packages.
+Neither changes what you install. The Rust crate is published and is what Keel's wasm compiles
+from, but does not carry a product name of its own yet.
 
 On a saturating loop the governed arm pays **4.1% to 20.2%** of the ungoverned bill across
 seven model families, with both arms making the same number of attempts. The hard stop
