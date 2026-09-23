@@ -1,88 +1,88 @@
-# Gubernaut Lab
+# Gubernaut
 
-**The missing control layer for modern AI.**
+**A runtime control layer for AI agents. It stops a runaway loop before the next call is billed.**
 
-Training-time alignment does not hold at runtime under adversarial pressure. Gubernaut
-builds the layer that does: a deterministic, model-agnostic **cognitive governor** that
-sits between your agent and the model, reads three bounded numbers per turn, and holds a
-posture. It does not retrain the host model. It regulates it at runtime, and every
-regulatory decision is logged, inspectable and reproducible.
+[![Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-000000)](https://www.apache.org/licenses/LICENSE-2.0)
+[![arXiv 2607.24339](https://img.shields.io/badge/arXiv-2607.24339-000000)](https://arxiv.org/abs/2607.24339)
+[![DOI 10.5281/zenodo.21303518](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21303518-000000)](https://doi.org/10.5281/zenodo.21303518)
+[![gubernaut.com](https://img.shields.io/badge/site-gubernaut.com-000000)](https://gubernaut.com)
 
-**No consciousness claims.** A regulation layer, measured and falsifiable.
+An agent stuck in a loop keeps paying for turns that make no progress. Gubernaut watches three
+numbers about each turn (**intensity, valence, repetition**), never the words, and a
+deterministic controller decides the posture: carry on, hold back, or stop. Same input, same
+decision, every run.
 
 ---
 
-## Install it
+## One controller, two ways to run it
 
-**[Gubernaut 1.0](https://github.com/thegubernaut/gubernaut)** is the deployable flagship:
-a local, OpenAI-compatible proxy that hard-stops runaway agent loops before they reach your
-API bill. Apache-2.0, free, self-hosted. Adoption is one line.
-
-```python
-openai.base_url = "http://localhost:8000/v1"
+```mermaid
+flowchart LR
+  A["Your agent<br/>(OpenAI SDK, LangChain,<br/>LlamaIndex, AutoGen, ElizaOS)"] -->|"chat request"| T["Gubernaut Tiller<br/>local proxy, :8000"]
+  T -->|"governed call"| U["The model you already use"]
+  T -. "a looping call is stopped here<br/>and never billed" .-> A
+  subgraph Keel["Gubernaut Keel: the same decision, in-process"]
+    K["@gubernaut/core · gubernaut-core"] --> P["posture: DEFAULT · INHIBIT · REGROUND"]
+  end
 ```
 
-| | Product | | |
-| --- | --- | --- | --- |
-| **Python**, start here | **Gubernaut Tiller** | [`gubernaut-sdk`](https://pypi.org/project/gubernaut-sdk/) | `pip install gubernaut-sdk` |
-| **Rust**, for performance and wasm | unnamed, held | [`gubernaut-core`](https://crates.io/crates/gubernaut-core) | `cargo add gubernaut-core` |
-| **JS/TS**, no proxy needed | **Gubernaut Keel** | [`@gubernaut/core`](https://www.npmjs.com/package/@gubernaut/core) | `npm install @gubernaut/core` |
-| **Node**, ElizaOS | proxy client (Tiller) | [`@gubernaut/plugin-gcc`](https://www.npmjs.com/package/@gubernaut/plugin-gcc) | `npm install @gubernaut/plugin-gcc` |
+| | What it is | Install | Code |
+|---|---|---|---|
+| **Gubernaut Tiller** | A local proxy that speaks the OpenAI API. It stops a looping call itself. | `pip install gubernaut-sdk` | [thegubernaut/tiller](https://github.com/thegubernaut/tiller) |
+| **Gubernaut Keel** | A library inside the program. It decides; the program does the stopping. | `npm install @gubernaut/core` · `cargo add gubernaut-core` | [thegubernaut/keel](https://github.com/thegubernaut/keel) |
+| ElizaOS plugin | A client of Tiller. It does nothing without the proxy running. | `npm install @gubernaut/plugin-gcc` | [thegubernaut/gubernaut](https://github.com/thegubernaut/gubernaut) |
 
-**Gubernaut Tiller** and **Gubernaut Keel** are product names for two of these four packages.
-Neither changes what you install. The Rust crate is published and is what Keel's wasm compiles
-from, but does not carry a product name of its own yet.
+**Start Tiller, then point the client at it.** Both lines are needed: nothing listens on port 8000
+until the proxy is running.
 
-On a saturating loop the governed arm pays **4.1% to 20.2%** of the ungoverned bill across
-seven model families, with both arms making the same number of attempts. The hard stop
-lands at turn 4 in every run, because the controller is input-deterministic.
+```bash
+pip install gubernaut-sdk
+gubernaut-proxy --upstream https://api.openai.com
+```
 
----
-
-## Verify it
-
-**Validation, pre-registered and cross-family.** Regulated output beats baseline in
-**15/16** generator by judge cells by sign (11/12 off-diagonal, 4/4 diagonal), **13/16 at
-p<.05**, across four frontier model families (GPT-5.5, Claude Opus 4.8, Gemini 3.5 Flash
-and Grok 4.3), each serving as both generator and judge. The recovery signature replicates
-4/4.
-
-**The one null cell is GPT by Gemini at -0.04.** It sits on the calmest host, the one with
-the least reactivity left to regulate, and it is reported rather than patched. The three
-sub-threshold cells all fall on that same near-saturated host.
-
-The original three-model matrix was pre-registered and frozen before the fourth family was
-added. Adding it changed no earlier cell, and both ship verbatim.
-
-- **Paper:** [arXiv:2607.24339](https://arxiv.org/abs/2607.24339) ·
-  [10.5281/zenodo.21303518](https://doi.org/10.5281/zenodo.21303518) (Zenodo, CC BY 4.0,
-  the concept DOI, always the latest version) ·
-  [PDF](https://gubernaut.com/paper/gubernaut_whitepaper.pdf)
-- **Evidence release:**
-  [Gubernaut_Validation](https://github.com/thegubernaut/Gubernaut_Validation).
-  Transcripts, judge panels with SHA-256, both sealed matrices, and the scripts that
-  recompute the headline end to end. Start at `RECOMPUTE.md`.
-- **Engineering receipts:**
-  [gubernaut/receipts](https://github.com/thegubernaut/gubernaut/tree/main/receipts).
-  Spend measurements, an on-chain retry loop severed at turn 4 on a local devnet with real
-  transaction hashes, wasm soaks bit-exact with flat memory, 240-way concurrency isolation,
-  and the hardening round that found four fail-open leaks in our own code.
-- **Replay:** [gubernaut.com/research](https://gubernaut.com/research) steps the sealed
-  runs turn by turn, both arms. Recorded run replay, no live API.
+```python
+client = OpenAI(base_url="http://localhost:8000/v1")
+```
 
 ---
 
-## Reproduce it
+## What it measured
 
-The controller is input-deterministic, the data is CC BY, the code is Apache-2.0 and the
-paper is public. **You can re-run the record and get the same numbers.**
+**Spend.** On the pre-registered receipts benchmark, a runaway loop governed by Tiller cost
+**4.1% to 20.2%** of the ungoverned bill. In other words it saved **79.8% to 95.9%**, across
+seven measured configurations in four model families, with both arms making the same number
+of attempts. The hard stop lands at turn 4, and turns 1 to 3 are sent and billed.
 
-That is the invitation, and a result that disagrees with ours is more useful to us than one
-that agrees. The procedure is
-[docs/REPRODUCE.md](https://github.com/thegubernaut/gubernaut/blob/main/docs/REPRODUCE.md),
-and it starts at 30 seconds with no API key.
+**Behaviour.** Across four frontier model families, each one's replies judged by all four, the
+governed arm was calmer in **15/16** generator×judge cells by sign and **13/16 at p<.05**.
+**One cell is a null: −0.04, GPT×Gemini.** It sits on the calmest host and is reported beside the
+headline everywhere the headline appears.
+
+**Scope.** Injection resistance is claimed for the controller only, the part that reads numbers
+and no text. That boundary is architectural and not yet adversarially tested. The part that writes
+the reply reads text by necessity, and its compliance is measured, not assumed.
 
 ---
 
-*[gubernaut.com](https://gubernaut.com) · [Discord](https://discord.gg/82R6ThPsFS) ·
-[X](https://x.com/theGubernaut) · contact@gubernaut.com*
+## The repositories
+
+| Repository | What is in it |
+|---|---|
+| [**gubernaut**](https://github.com/thegubernaut/gubernaut) | The main copy of the code: the Python proxy, the JavaScript and Rust controllers, the ElizaOS plugin, the engineering receipts and the bench |
+| [**tiller**](https://github.com/thegubernaut/tiller) | The same code, with a front page that explains Tiller in plain language |
+| [**keel**](https://github.com/thegubernaut/keel) | The same code, with a front page that explains Keel in plain language |
+| [**Gubernaut_Validation**](https://github.com/thegubernaut/Gubernaut_Validation) | The paper's evidence: transcripts, judge panels, the sealed matrices, and the scripts that recompute the headline. The data is sealed by SHA-256 and timestamped |
+
+**The paper:** *Gubernaut: A Deterministic Homeostatic Controller for Affect-Regulated LLM
+Agents, Validated Across Independent Model Families.* [arXiv 2607.24339](https://arxiv.org/abs/2607.24339) ·
+[DOI 10.5281/zenodo.21303518](https://doi.org/10.5281/zenodo.21303518) (the concept DOI, which
+always resolves to the latest version) · [PDF](https://gubernaut.com/paper/gubernaut_whitepaper.pdf)
+
+**See the runs:** [gubernaut.com/research](https://gubernaut.com/research) has the paper, the
+results and a recorded dashboard of every sealed run. It is a recorded run replay with no live API.
+
+---
+
+Code under Apache-2.0, research data under CC-BY-4.0. Free and self-hosted, with no account, and
+nothing is sent back to the lab. Questions: [contact@gubernaut.com](mailto:contact@gubernaut.com)
+or [GitHub issues](https://github.com/thegubernaut/gubernaut/issues).
