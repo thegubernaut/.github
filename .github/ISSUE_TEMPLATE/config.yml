@@ -1,0 +1,12 @@
+# Default issue chooser for organisation repositories that do not carry their own templates.
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/thegubernaut/gubernaut/security/advisories/new
+    about: Fail-opens, boundary crossings, credential leaks and hard-stop bypasses, privately. Never in a public issue.
+  - name: A bug or a question about the code
+    url: https://github.com/thegubernaut/gubernaut/issues
+    about: The code lives in the main repository, and so do its issues.
+  - name: Questions and discussion
+    url: https://github.com/thegubernaut/gubernaut/discussions
+    about: Anything that is not a bug.
