@@ -14,8 +14,8 @@ on the main repository, or email **contact@gubernaut.com** with `SECURITY` in th
 Include the repository, the version, what you expected, what happened, and a minimal
 reproduction if you have one.
 
-This is a small project. You will get an acknowledgement within a few days; if you have not heard
-back in a week, send a reminder. Report privately, allow a reasonable window for a fix, and you
+This is a small project, so no response time is promised. If you have not heard back in a week,
+send a reminder. Report privately, allow a reasonable window for a fix, and you
 will be credited in the advisory unless you would rather not be.
 
 ## The validation record

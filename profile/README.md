@@ -7,10 +7,10 @@
 [![DOI 10.5281/zenodo.21303518](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21303518-000000)](https://doi.org/10.5281/zenodo.21303518)
 [![gubernaut.com](https://img.shields.io/badge/site-gubernaut.com-000000)](https://gubernaut.com)
 
-An agent stuck in a loop keeps paying for turns that make no progress. Gubernaut watches three
-numbers about each turn (**intensity, valence, repetition**), never the words, and a
-deterministic controller decides the posture: carry on, hold back, or stop. Same input, same
-decision, every run.
+An agent stuck in a loop keeps paying for turns that make no progress. Gubernaut's deterministic
+controller reads three numbers about each turn (**intensity, valence, repetition**), never the
+words, and decides the posture: carry on, hold back, or stop. Tiller, the proxy, works those
+numbers out locally from the messages the agent sends. Same input, same decision, every run.
 
 ---
 
@@ -48,10 +48,12 @@ client = OpenAI(base_url="http://localhost:8000/v1")
 
 ## What it measured
 
-**Spend.** On the pre-registered receipts benchmark, a runaway loop governed by Tiller cost
-**4.1% to 20.2%** of the ungoverned bill. In other words it saved **79.8% to 95.9%**, across
-seven measured configurations in four model families, with both arms making the same number
-of attempts. The hard stop lands at turn 4, and turns 1 to 3 are sent and billed.
+**Spend.** On the verbatim-loop battery of the pre-registered receipts benchmark, a runaway loop
+governed by Tiller used **4.1% to 20.2%** of the ungoverned spend. In other words it saved
+**79.8% to 95.9%**, across seven measured configurations in four model families, with both arms
+making the same number of attempts. Gemini-native Gemma is free-tier only, so those rows are
+token deltas and carry no dollar claim. The hard stop lands at turn 4, and turns 1 to 3 are sent
+and billed.
 
 **Behaviour.** Across four frontier model families, each one's replies judged by all four, the
 governed arm was calmer in **15/16** generator×judge cells by sign and **13/16 at p<.05**.
